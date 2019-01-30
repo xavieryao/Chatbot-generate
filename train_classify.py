@@ -29,12 +29,12 @@ parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFo
 parser.add_argument("--train", default="dataset/classify/aminer_train.tsv", help="Train set location")
 parser.add_argument("--test", default="dataset/classify/aminer_test.tsv", help="Test set location")
 parser.add_argument("--name", default="rnn", help="model name")
-parser.add_argument('--epochs', default=100, type=int, metavar='N', help='number of total epochs to run')
+parser.add_argument('--epochs', default=20, type=int, metavar='N', help='number of total epochs to run')
 parser.add_argument('-b', '--batch-size', default=128, type=int, metavar='N', help='mini-batch size')
 parser.add_argument('--lr', '--learning-rate', default=0.005, type=float, metavar='LR', help='initial learning rate')
 parser.add_argument('--weight-decay', '--wd', default=1e-4, type=float, metavar='W', help='weight decay')
 parser.add_argument('--print-freq', '-p', default=10, type=int, metavar='N', help='print frequency')
-parser.add_argument('--save-freq', '-sf', default=25, type=int, metavar='N', help='model save frequency(epoch)')
+parser.add_argument('--save-freq', '-sf', default=5, type=int, metavar='N', help='model save frequency(epoch)')
 parser.add_argument('--embedding-size', default=300, type=int, metavar='N', help='embedding size')
 parser.add_argument('--hidden-size', default=128, type=int, metavar='N', help='rnn hidden size')
 parser.add_argument('--layers', default=2, type=int, metavar='N', help='number of rnn layers')
@@ -93,6 +93,10 @@ optimizer = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters(
 criterion = nn.CrossEntropyLoss()
 print(optimizer)
 print(criterion)
+
+print("Model's state_dict:")
+for param_tensor in model.state_dict():
+        print(param_tensor, "\t", model.state_dict()[param_tensor].size())
 
 if args.cuda:
     torch.backends.cudnn.enabled = True
@@ -189,10 +193,12 @@ for epoch in range(1, args.epochs + 1):
 
     classify_adjust_learning_rate(args.lr, optimizer, epoch)
     train(train_loader, model, criterion, optimizer, epoch)
-    # test(val_loader, model, criterion)
+    test(val_loader, model, criterion)
 
     # save current model
     if epoch % args.save_freq == 0:
         path_save_model = 'models/' + args.name + '/classify.ml'
         # joblib.dump(model.float(), path_save_model, compress=2)
         torch.save(model, path_save_model)
+
+torch.save(model, path_save_model)

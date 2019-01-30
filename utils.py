@@ -277,6 +277,7 @@ def init_lstm(input_lstm):
 
 def _tokenize(text):
     # return [x.lower() for x in nltk.word_tokenize(text)]
+    text = str(text)
     return [x.lower() for x in text.split()]
 
 

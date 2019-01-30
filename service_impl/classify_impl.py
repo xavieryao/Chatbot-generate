@@ -40,7 +40,7 @@ class ClassifyLoader(object):
         return model, d_word_index
 
 
-def classify(txt, model, d_word_index):
+def classify(txt, model, d_word_index, raw_proba=False):
     # txt = txt.strip()
     word = []
     for item in txt.split():
@@ -56,4 +56,7 @@ def classify(txt, model, d_word_index):
     for i, (seq, target, seq_lengths) in enumerate(train_loader):
         output = model(seq, seq_lengths)
         arr = output[0].data.numpy().tolist()
-    return arr.index(max(arr))
+    if raw_proba:
+        return arr
+    else:
+        return arr.index(max(arr))

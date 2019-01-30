@@ -105,7 +105,7 @@ def check_list(list):  # 检查list中所有元素，将中文词连接起来
         return list
 
 
-def ner(txt, model, word_to_id, char_to_id, tag_to_id, id_to_tag, lower=True):
+def ner(txt, model, word_to_id, char_to_id, tag_to_id, id_to_tag, lower=True, raw=False):
     # txt = txt.strip()
     word = []
     for item in txt.split():
@@ -127,6 +127,10 @@ def ner(txt, model, word_to_id, char_to_id, tag_to_id, id_to_tag, lower=True):
     prediction_tag = []
     for i in prediction_id:
         prediction_tag.append(id_to_tag[i])
+
+    if raw:
+        print('raw!')
+        return list(zip(word, prediction_tag))
 
     label = set()
     for tag in tag_to_id.keys():

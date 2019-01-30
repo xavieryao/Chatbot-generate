@@ -351,6 +351,7 @@ def evaluating(model, datas, best_F):
         ))
     return best_F, new_F, save
 
+
 model.train(True)
 for epoch in range(1, 21):
     print("epoch = %i." % epoch)
@@ -427,6 +428,7 @@ for epoch in range(1, 21):
                 print("SAVE!")
                 torch.save(model, model_name)
             best_test_F, new_test_F, _ = evaluating(model, test_data, best_test_F)
+            print('best_test_F: {}, new_test_F: {}'.format(best_test_F, new_test_F))
             sys.stdout.flush()
 
             # all_F.append([new_train_F, new_dev_F, new_test_F])

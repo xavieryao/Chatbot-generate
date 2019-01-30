@@ -293,6 +293,7 @@ class RNN(nn.Module):
 
         self.bn2 = nn.BatchNorm1d(hidden_size * 2)
         self.fc = nn.Linear(hidden_size*2, num_output)
+        self.softmax = nn.Softmax()
 
     def forward(self, x, seq_lengths):
         """
@@ -327,5 +328,6 @@ class RNN(nn.Module):
             last_tensor = torch.mean(last_tensor, dim=1)
 
         fc_input = self.bn2(last_tensor)
-        out = self.fc(fc_input)
+        fc_out = self.fc(fc_input)
+        out = self.softmax(fc_out)
         return out

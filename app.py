@@ -44,6 +44,11 @@ def query(text, name):
         'intent': classify(text, name),
         'entity': ner(text, name)
     }
+    new_entity = ret['entity'].copy()
+    for k in ret['entity'].keys():
+        if k.endswith('_EN'):
+            new_entity[k[:-3]] += new_entity[k]
+    ret['entity'] = new_entity
     log_data = {
         'time': datetime.datetime.now(),
         'bot_name': name
