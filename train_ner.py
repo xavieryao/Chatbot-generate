@@ -353,7 +353,7 @@ def evaluating(model, datas, best_F):
 
 
 model.train(True)
-for epoch in range(1, 21):
+for epoch in range(1, 6):
     print("epoch = %i." % epoch)
     for i, index in enumerate(np.random.permutation(len(train_data))):
         tr = time.time()

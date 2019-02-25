@@ -47,7 +47,8 @@ def query(text, name):
     new_entity = ret['entity'].copy()
     for k in ret['entity'].keys():
         if k.endswith('_EN'):
-            new_entity[k[:-3]] += new_entity[k]
+            entity_name = k[:-3].replace('.', '_')
+            new_entity[entity_name] += new_entity[k]
     ret['entity'] = new_entity
     log_data = {
         'time': datetime.datetime.now(),
@@ -56,7 +57,7 @@ def query(text, name):
 
     log_data.update(ret)
     coll = load_db('dataset/mongo.txt')
-    write_db(coll, log_data)
+    #write_db(coll, log_data)
 
     result = json.dumps(ret, ensure_ascii=False)
     logger.info(result)

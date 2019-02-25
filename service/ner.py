@@ -16,12 +16,17 @@ def ner(text, name, raw=False):
 if __name__ == '__main__':
     import csv
     import json
-    with open('service/aminer_data.csv', encoding='utf8') as f:
-        lines = list(csv.reader(f))
+    with open('service/classify.txt', encoding='utf8') as f:
+        lines = []
+        for line in f:
+            if '\t' not in line:
+                continue
+            tag, sent = line.split('\t')
+            lines.append(sent)
 
     with open('result.txt', 'w', encoding='utf8') as f:
         for line in lines:
-            tags = ner(line[0], '5bfe0b04c4952f342f394a42', True)
+            tags = ner(line, '5c516f95c4952f177b9a70fb', True)
             f.write(json.dumps(tags, ensure_ascii=False))
             f.write('\n')
 

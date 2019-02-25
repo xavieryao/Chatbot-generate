@@ -328,6 +328,5 @@ class RNN(nn.Module):
             last_tensor = torch.mean(last_tensor, dim=1)
 
         fc_input = self.bn2(last_tensor)
-        fc_out = self.fc(fc_input)
-        out = self.softmax(fc_out)
+        out = self.fc(fc_input)
         return out
